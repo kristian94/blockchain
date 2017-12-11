@@ -8,10 +8,14 @@ const printChain = Symbol();
 function Chain(){
     const block = makeGenesisBlock();
     this.blocks = [block];
-    this.unmined = new Map();
-    
+    this.indexes = new Map();
+    this.unmined = new Set();
+
     function makeGenesisBlock(){
-        const block = new Block("Krissen er missen", '');
+        const block = new Block({
+            data: "63N3212",
+            previousHash: ''
+        });
         block.hash = "0000be236d75dec09051d4ce707c3635d098e584fad0fcb4e88dd0e6f85efec8";
         block.nonce = 'tfFP8DLR3TNT64';
         return block;
@@ -22,10 +26,16 @@ Chain.prototype.push = function(block){
     const conflict = block.previousHash !== this.getNewestBlockHash();
 
     if(!conflict){
-        const newLength = this.blocks.push(block);
-        this.unmined[block._id] = newLength - 1;
+        const blockIndex = this.blocks.push(block) - 1;
+        block.chain = this;
+        // indexing the block for quick lookups
+        this.indexes.set(block._id, blockIndex);
+        if(!block.isMined()){
+            this.unmined.add(block._id);
+        }
     }else{
         const blockInArray = this.blocks.pop();
+        this.unmined.delete(blockInArray._id);
         const sorted = [block, blockInArray].sort((a, b) => {
             return a.timestamp - b.timestamp
         });
@@ -41,21 +51,37 @@ Chain.prototype.getNewestBlockHash = function(){
     return this.blocks[len - 1].hash;
 };
 
-Chain.prototype.updateMinedBlock = function(block){
+Chain.prototype.updateBlock = function(block){
+    const index = this.indexes.get(block._id);
+    const nextIndex = index + 1;
+    const prevBlock = index - 1 >= 0 ? this.blocks[index - 1] : null;
+    const prevHash = prevBlock ? prevBlock.hash : '';
 
+    const updated = this.blocks[index].tryUpdate(block.hash, block.nonce);
+    if(!block.previousHash) block.previousHash = prevHash;
+
+    this.unmined.delete(block._id);
+
+    if(updated && nextIndex < this.block.length){
+        // tryUpdate next block
+        const nextBlock = this.blocks[nextIndex];
+        this.updateBlock(nextBlock);
+    }
 };
 
-Chain.prototype.get = function(){
-    return this.blocks;
+Chain.prototype.getBlock = function(id){
+    const index = this.indexes.get(id);
+    return this.blocks[index];
 };
 
-Chain.prototype.getUnmined = function(){
-    return this.blocks.filter(b => b.isMined())
+Chain.prototype.getNextUnmined = function(){
+    const id = this.unmined.values().next().value;
+    const index = this.indexes.get(id);
+    return this.blocks[index];
 };
 
 Chain.prototype.print = function () {
-    console.log('Chain:', this.blocks);
-    console.log('Unmined blocks:', this.getUnmined());
+    this.blocks.forEach(b => console.log(b.data))
 };
 
 module.exports = Chain;

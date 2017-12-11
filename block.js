@@ -5,6 +5,7 @@ const _ = require('./helpers');
 const difficulty = 4; // number of zeroes a hash should start with
 
 const hashIsValid = Symbol(); // private functions
+const getStamp = Symbol();
 
 const entropy = { // used for generating nonces
     random: new entropyString.Random(),
@@ -18,7 +19,7 @@ function Block(options){
     });
 
     this._id =          options._id || entropy.random.string(entropy.bits);
-    this.timestamp =    options.timestamp || new Date().getTime();
+    this.timestamp =    options.timestamp || this[getStamp]();
     this.data =         options.data;
     this.previousHash = options.previousHash;
     this.nonce =        options.nonce || null;
@@ -34,21 +35,23 @@ Block.prototype.mine = function(){
         if(isValid){
             this.nonce = nonce;
             this.hash = hash;
+            if(this.chain){
+                this.chain.updateBlock(this);
+            }
         }
     }
 };
 
-Block.prototype.update = function(hash, nonce){
+Block.prototype.tryUpdate = function(hash, nonce){
     _.assert(hash, nonce);
 
-    // sikkerhed - måske lidt overkill?
-    // const confirmationHash = crypto.SHA256(this.previousHash + this.timestamp + this.data + nonce).toString();
-    // if(hash !== confirmationHash){
-    //     throw new Error(`Block was not able to replicate hash with nonce [${nonce}]`);
-    // }
+    const update = this.nonce !== nonce || this.hash !== hash;
 
-    this.nonce = nonce;
-    this.hash = hash;
+    if(update){
+        this.nonce = nonce;
+        this.hash = hash;
+    }
+    return update;
 };
 
 Block.prototype.isMined = function(){
@@ -80,16 +83,9 @@ Block.prototype.toDTO = function(){
     }
 };
 
-// Block.prototype.fromDTO = function(dto){
-//     const block = new Block(dto.data, dto.previousHash);
-//     block.nonce = dto.nonce;
-//     block.timestamp = dto.timestamp;
-//     block.hash = dto.hash;
-//     return block;
-// };
-
-Block.prototype.toString = function(){
-    return this.hash;
+Block.prototype[getStamp] = function(){
+    var hrtime = process.hrtime();
+    return ( hrtime[0] * 1000000 + hrtime[1] / 1000 ) / 1000;
 };
 
 module.exports = Block;
