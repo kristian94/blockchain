@@ -6,36 +6,52 @@ const blocks = [];
 
 
 
-const nextHash = chain.getNewestBlockHash();
 
-// vi simulerer to blocke der bliver instantieret med samme previousHash
+
 
 const blockA = new Block({
-    data: 'første',
-    previousHash: nextHash
+    data: 'første'
 });
 
 const blockB = new Block({
-    data: 'anden',
-    previousHash: nextHash
+    data: 'anden'
 });
 
 const blockC = new Block({
-    data: 'tredje',
-    previousHash: nextHash
+    data: 'tredje'
 });
 
-chain.push(blockC);
+const blockD = new Block({
+    data: 'fjerde'
+});
+
+const blockE = new Block({
+    data: 'femte'
+});
+
+chain.push(blockD);
 
 chain.push(blockB);
 
+chain.push(blockC);
+
+chain.push(blockE);
+
 chain.push(blockA);
 
+
+chain.getNextUnmined().mine();
+
 chain.getNextUnmined().mine();
 
 chain.getNextUnmined().mine();
 
 chain.getNextUnmined().mine();
+
+chain.getNextUnmined().mine();
+
+
+
 
 chain.print();
 

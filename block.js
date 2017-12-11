@@ -14,8 +14,7 @@ const entropy = { // used for generating nonces
 
 function Block(options){
     _.assert({
-        data: options.data,
-        previousHash: options.previousHash
+        data: options.data
     });
 
     this._id =          options._id || entropy.random.string(entropy.bits);
@@ -27,6 +26,7 @@ function Block(options){
 }
 
 Block.prototype.mine = function(){
+    _.assert({'this.chain': this.chain});
     let isValid = this[hashIsValid]();
     while(!isValid){
         const nonce = entropy.random.string(entropy.bits); // generate nonce
@@ -35,9 +35,8 @@ Block.prototype.mine = function(){
         if(isValid){
             this.nonce = nonce;
             this.hash = hash;
-            if(this.chain){
-                this.chain.updateBlock(this);
-            }
+            this.chain.updateBlock(this);
+
         }
     }
 };

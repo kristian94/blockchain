@@ -23,7 +23,7 @@ function Chain(){
 }
 
 Chain.prototype.push = function(block){
-    const conflict = block.previousHash !== this.getNewestBlockHash();
+    const conflict = this.blocks[this.blocks.length - 1].timestamp > block.timestamp;
 
     if(!conflict){
         const blockIndex = this.blocks.push(block) - 1;
@@ -33,6 +33,7 @@ Chain.prototype.push = function(block){
         if(!block.isMined()){
             this.unmined.add(block._id);
         }
+        block.previousHash = this.getNewestBlockHash();
     }else{
         const blockInArray = this.blocks.pop();
         this.unmined.delete(blockInArray._id);
@@ -40,7 +41,7 @@ Chain.prototype.push = function(block){
             return a.timestamp - b.timestamp
         });
         sorted.forEach(b => {
-            b.previousHash = this.getNewestBlockHash();
+
             this.push(b);
         });
     }
@@ -81,7 +82,7 @@ Chain.prototype.getNextUnmined = function(){
 };
 
 Chain.prototype.print = function () {
-    this.blocks.forEach(b => console.log(b.data))
+    this.blocks.forEach(b => console.log(b.data, b.timestamp))
 };
 
 module.exports = Chain;
