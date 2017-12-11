@@ -1,34 +1,33 @@
+const express = require('express');
 const Block = require('./block');
 const Chain = require('./chain');
-const express = require('express');
-
 const _ = require('./helpers');
 
-const bootyParser = require('body-parser');
-
 const chain = new Chain();
+
+const bootyParser = require('body-parser');
 
 const app = express();
 
 app.use(bootyParser.json());
 
-const port = 8080;
-
-app.post('/block', (req, res) => {
+// routes
+app.post('/block/add', (req, res) => {
     try{
-        _.assert({
-            data: req.body.data,
-            hash: req.body.hash,
-            nonce: req.body.nonce
-        });
-        chain.push(req.body);
+        const block = new Block(req.data, req.previousHash);
+        const result = chain.push(req.body);
+
         res.end('Cock added to chain, good job friend!(Y)');
     }catch(err){
         res.end('Der er noget med galt: ' + err);
     }
+});
+
+app.post('/block/mined,', (req, res) => { // this route is called when another peer has mined a block
+    const block = Block.prototype.fromDTO(req.block);
 
 });
 
+const port = 8080;
 
 app.listen(port);
-// console.log(express.bodyParser)
