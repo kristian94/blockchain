@@ -1,0 +1,35 @@
+version: "2.1"
+
+services:
+  node1:
+    container_name: blockchain-node1
+    image: mawmaw/blockchain
+    ports:
+      - "22210:8080"
+    networks:
+    - blockchain-network
+  node2:
+    container_name: blockchain-node2
+    image: mawmaw/blockchain
+    ports:
+      - "22211:8080"
+    networks:
+    - blockchain-network
+  node3:
+    container_name: blockchain-node3
+    image: mawmaw/blockchain
+    ports:
+      - "22212:8080"
+    networks:
+    - blockchain-network
+  node4:
+    container_name: blockchain-node4
+    image: mawmaw/blockchain
+    ports:
+      - "22213:8080"
+    networks:
+    - blockchain-network
+
+networks:
+  blockchain-network:
+    driver: bridge
