@@ -5,8 +5,18 @@ const Node = require('./nodeWrapper');
 
 const _ = require('./helpers');
 
-const ports = [8080, 8081, 8082, 8083];
-const [,, port, ip] = process.argv;
+const ips = ['172.56.0.11', '172.56.0.12', '172.56.0.13', '172.56.0.14'];
+const ip = process.env.ip;
+
+if(ip === null){
+    throw error('Okay det der env virkede ikke alligevel...');
+}
+
+ips.forEach((i, index) => {
+    if(i === ip){
+        ips.splice(index, 1)
+    }
+});
 
 let currentBlock = newBlock();
 
@@ -56,7 +66,7 @@ app.use(bootyParser.json());
 app.post('/blockMined,', (req, res) => { // this route is called when another peer has mined a block
     const block = req.block;
     const result = chain.trySetBlockAsPending(block);
-    res.end(result);
+    res.end('100');
     // hvis pending findes, sender 100
     // hvis block ikke matcher prevHash, sender 200
     // hvis block er bra, sender block retur
@@ -86,6 +96,9 @@ function run(){
         // await consensus
         const proms = nodes.map(n => n.annonceMinedBlock(currentBlock));
         Promise.all(proms).then(res => {
+            let pendingCount = res.reduce((a, r) => r === '100' ? a + 1: a, 0);
+            let hashMismatchCount = res.reduce((a, r) => r === '200' ? a + 1: a, 0);
+
 
         })
     }else if(state === STATE.MINE){
