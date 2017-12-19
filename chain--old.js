@@ -1,4 +1,4 @@
-const Block = require('./block');
+const Block = require('./block--old');
 const _ = require('./helpers');
 
 const printChain = Symbol();

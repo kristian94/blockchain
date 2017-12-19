@@ -33,4 +33,8 @@ Chain.prototype.addPendingBlockToChain = function(){
     this.blocks.push(block);
 };
 
+Chain.prototype.getNewestBlockHash = function(){
+    return this.blocks[this.blocks.length - 1].hash;
+};
+
 module.exports = Chain;
