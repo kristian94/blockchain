@@ -1,12 +1,8 @@
 const Block = require('./block');
-const Chain = require('./chain');
+const Chain = require('./chain--old');
 const chain = new Chain();
 
 const blocks = [];
-
-
-
-
 
 
 const blockA = new Block({

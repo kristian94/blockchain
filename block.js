@@ -2,7 +2,7 @@ const crypto = require('crypto-js');
 const entropyString = require('entropy-string');
 const _ = require('./helpers');
 
-const difficulty = 4; // number of zeroes a hash should start with
+const difficulty = 5; // number of zeroes a hash should start with
 
 const hashIsValid = Symbol(); // private functions
 const getStamp = Symbol();
@@ -57,6 +57,18 @@ Block.prototype.isMined = function(){
     return !_.isNull(this.nonce) && this[hashIsValid]();
 };
 
+Block.prototype.toDTO = function(){
+    return {
+        _id: this._id,
+        data: this.data,
+        hash: this.hash,
+        previousHash: this.previousHash,
+        nonce: this.nonce,
+        timestamp: this.timestamp
+    }
+};
+
+
 Block.prototype[hashIsValid] = function(hash = this.hash){
 
     const matchString = getMatchString();
@@ -68,17 +80,6 @@ Block.prototype[hashIsValid] = function(hash = this.hash){
             string += '0';
         }
         return string;
-    }
-};
-
-Block.prototype.toDTO = function(){
-    return {
-        _id: this._id,
-        data: this.data,
-        hash: this.hash,
-        previousHash: this.previousHash,
-        nonce: this.nonce,
-        timestamp: this.timestamp
     }
 };
 
