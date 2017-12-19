@@ -4,32 +4,49 @@ services:
   node1:
     container_name: blockchain-node1
     image: mawmaw/blockchain
-    ports:
-      - "22210:8080"
-    networks:
-    - blockchain-network
-  node2:
-    container_name: blockchain-node2
-    image: mawmaw/blockchain
+    environment:
+      - ip=172.56.0.11
     ports:
       - "22211:8080"
     networks:
-    - blockchain-network
-  node3:
-    container_name: blockchain-node3
+      blockchain-network:
+        ipv4_address: "172.56.0.11"
+  node2:
+    container_name: blockchain-node2
     image: mawmaw/blockchain
+    environment:
+      - ip=172.56.0.12
     ports:
       - "22212:8080"
     networks:
-    - blockchain-network
-  node4:
-    container_name: blockchain-node4
+      blockchain-network:
+        ipv4_address: "172.56.0.12"
+  node3:
+    container_name: blockchain-node3
     image: mawmaw/blockchain
+    environment:
+      - ip=172.56.0.13
     ports:
       - "22213:8080"
     networks:
-    - blockchain-network
+      blockchain-network:
+        ipv4_address: "172.56.0.13"
+  node4:
+    container_name: blockchain-node4
+    image: mawmaw/blockchain
+    environment:
+      - ip=172.56.0.14
+    ports:
+      - "22214:8080"
+    networks:
+      blockchain-network:
+        ipv4_address: "172.56.0.14"
 
 networks:
   blockchain-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.56.0.0/16
+        gateway: 172.56.0.1
