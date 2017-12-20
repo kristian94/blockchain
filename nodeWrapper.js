@@ -1,33 +1,50 @@
 const axios = require('axios');
 
-function Node(port){
-    this.port = port;
-
+function Node(ip){
+    this.port = 8080;
+    this.ip = ip;
+    this.isLive = true;
 }
 
-Node.prototype.annonceMinedBlock = function(block){
-    return axios.post(this.url('/blockMined'), block)
+Node.prototype.postBlock = function(block){
+    console.log('postBlock to', this.url('/block'))
+    return axios(this.url('/block'), {
+        method: 'post',
+        data: block
+    }).then(res => {
+        return res.data
+    })
+    //     .catch(res => {
+    //     return Promise.resolve(block)
+    // })
 };
 
-Node.prototype.validateBlock = function(){
-    return axios.post(this.url('/validateCurrent'), block)
+Node.prototype.getChain = function(){
+    console.log('getChain')
+    return axios(this.url('/chain'), {
+        method: 'get'
+    }).then(res => {
+        return res.data
+    })
+    //     .catch(res => {
+    //     return Promise.resolve([])
+    // })
+};
+
+Node.prototype.getChainLength = function(){
+    console.log('getChainLength')
+    return axios(this.url('/chainLength'), {
+        method: 'get'
+    }).then(res => {
+        return res.data.length
+    })
+    //     .catch(r => {
+    //     return Promise.resolve(1)
+    // })
 };
 
 Node.prototype.url = function(path){
-    return `${this.ip.get()}:${this.port}${path}`;
+    return `http://${this.ip}:${this.port}${path}`;
 };
-
-Node.prototype.ip = (function(){
-    let ip = '127.0.0.1';
-
-    return {
-        get(){
-            return ip
-        },
-        set(_ip){
-            ip = _ip;
-        }
-    }
-})();
 
 module.exports = Node;

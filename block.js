@@ -2,12 +2,17 @@ const crypto = require('crypto-js');
 const entropyString = require('entropy-string');
 const _ = require('./helpers');
 
-const difficulty = 10; // number of zeroes a hash should start with
+const difficulty = 5; // number of zeroes a hash should start with
 
 const getStamp = Symbol();
 const hashIsValid = Symbol();
 
-function Block(options){
+const entropy = { // used for generating nonces
+    random: new entropyString.Random(),
+    bits: entropyString.Entropy.bits(1e6, 1e9)
+};
+
+function Block(options = {}){
     _.assert({
         data: options.data
     });
@@ -16,7 +21,14 @@ function Block(options){
     this.data =         options.data;
     this.nonce =        options.nonce || null;
     this.hash =         options.hash || null;
+    this.previousHash = options.previousHash || null;
 }
+
+Block.prototype.revalidate = function(previousHash){
+    if(!this.nonce) return false;
+    const hash = crypto.SHA256(previousHash + this.timestamp + this.data + this.nonce).toString()
+    return this[hashIsValid](hash);
+};
 
 Block.prototype.mine = function(previousHash){
 
@@ -28,7 +40,10 @@ Block.prototype.mine = function(previousHash){
         this.nonce = nonce;
         this.hash = hash;
         this.previousHash = previousHash;
+        return true;
     }
+
+    return false;
 };
 
 Block.prototype[hashIsValid] = function(hash = this.hash){

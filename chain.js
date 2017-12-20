@@ -1,3 +1,5 @@
+const Block = require('./block');
+
 function Chain(){
     const block = makeGenesisBlock();
     this.blocks = [block];
@@ -14,24 +16,36 @@ function Chain(){
     }
 }
 
-Chain.prototype.trySetBlockAsPending = function(block){
-    if(this.pending !== null){
-        return 100
-    }else if(this.pending.previousHash !== this.blocks[this.blocks.length - 1].hash){
-        return 200
+// if pushed, returns the block. If not, returns the newest block in the chain
+Chain.prototype.tryPush = function(block){
+    const prevHash = this.getNewestBlockHash();
+    if(block.previousHash === prevHash && block.revalidate(prevHash)){
+        this.blocks.push(block);
+        return block;
+    }else{
+        return this.blocks[this.blocks.length - 1];
     }
-
-    this.pending = block;
 };
 
-Chain.prototype.addPendingBlockToChain = function(){
-    if(this.pending !== null){
-        return;
-    }
-    let block = this.pending;
-    this.pending = null;
-    this.blocks.push(block);
-};
+// Chain.prototype.trySetBlockAsPending = function(block){
+//     if(this.pending !== null){
+//         return this.pending
+//     }else if(this.pending.previousHash !== this.blocks[this.blocks.length - 1].hash){
+//         return 400
+//     }
+//
+//     this.pending = block;
+//     return this.pending;
+// };
+
+// Chain.prototype.addPendingBlockToChain = function(block = this.pending){
+//     if(this.pending !== null){
+//         return;
+//     }
+//     let block = this.pending;
+//     this.pending = null;
+//     this.blocks.push(block);
+// };
 
 Chain.prototype.getNewestBlockHash = function(){
     return this.blocks[this.blocks.length - 1].hash;

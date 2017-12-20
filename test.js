@@ -1,11 +1,16 @@
-const ips = ['172.56.0.11', '172.56.0.12', '172.56.0.13', '172.56.0.14'];
-const ip = '172.56.0.11';
+const Node = require('./nodeWrapper');
+
+const node = new Node('127.0.0.1');
 
 
-ips.forEach((i, index) => {
-    if(i === ip){
-        ips.splice(index, 1)
-    }
-});
+// node.getChainLength().then(r => {
+//     console.log(r)
+// });
 
-console.log(ips)
+// node.getChain().then(r => {
+//     console.log(r)
+// })
+//
+node.postBlock({hash: '1234'}).then(r => {
+    console.log(r)
+})
