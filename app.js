@@ -21,8 +21,6 @@ if(ip === null){throw error('Okay det der env virkede ikke alligevel...');}
 ips.forEach((i, index) => {if(i === ip){ips.splice(index, 1)}}); // remove own ip from list
 
 
-
-
 // nodes, chain and express
 const nodes = ips.map(ip => new Node(ip));
 let chain = new Chain();
