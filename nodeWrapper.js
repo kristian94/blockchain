@@ -26,9 +26,6 @@ Node.prototype.getChain = function(){
     }).then(res => {
         return res.data
     })
-    //     .catch(res => {
-    //     return Promise.resolve([])
-    // })
 };
 
 Node.prototype.getChainLength = function(){

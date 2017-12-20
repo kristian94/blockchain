@@ -2,8 +2,6 @@ const crypto = require('crypto-js');
 const entropyString = require('entropy-string');
 const _ = require('./helpers');
 
-const difficulty = 5; // number of zeroes a hash should start with
-
 const getStamp = Symbol();
 const hashIsValid = Symbol();
 
@@ -22,6 +20,7 @@ function Block(options = {}){
     this.nonce =        options.nonce || null;
     this.hash =         options.hash || null;
     this.previousHash = options.previousHash || null;
+    this.difficulty =   Number(options.difficulty) || 5;
 }
 
 Block.prototype.revalidate = function(previousHash){
@@ -47,13 +46,12 @@ Block.prototype.mine = function(previousHash){
 };
 
 Block.prototype[hashIsValid] = function(hash = this.hash){
-
-    const matchString = getMatchString();
+    const matchString = getMatchString.call(this);
     return hash && hash.indexOf(matchString) === 0;
 
     function getMatchString(){
         let string = '';
-        for(let i = 0; i < difficulty; i++){
+        for(let i = 0; i < this.difficulty; i++){
             string += '0';
         }
         return string;

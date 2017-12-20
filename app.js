@@ -9,15 +9,18 @@ const bootyParser = require('body-parser');
 // ip setup
 const ips = ['172.56.0.11', '172.56.0.12', '172.56.0.13', '172.56.0.14'];
 const ip = process.env.ip;
-
+const difficulty = process.env.difficulty || 5;
 
 // DEV: TEMP
 // const ips = ['127.0.0.1', '127.0.0.2'];
 // const ip = process.argv[2] || '127.0.0.1';
+// const difficulty = process.argv[3] || 5;
 // DEV: TEMP END
 
 if(ip === null){throw error('Okay det der env virkede ikke alligevel...');}
 ips.forEach((i, index) => {if(i === ip){ips.splice(index, 1)}}); // remove own ip from list
+
+
 
 
 // nodes, chain and express
@@ -32,7 +35,7 @@ let currentBlock = newBlock();
 function newBlock(){
     const data = getData();
 
-    return new Block({data});
+    return new Block({data, difficulty});
 
     function getData(){
         const myArray = [
@@ -88,7 +91,7 @@ app.get('/chainLength', (req, res) => {
 
 // mini event loop
 function run(){
-    console.log('state:', state);
+    // console.log('state:', state);
 
     if(state === STATES.ANNONCE_MINED_BLOCK){
         // await response
@@ -107,7 +110,12 @@ function run(){
                 state = STATES.RESYNC_WITH_NODES;
             }
             run();
-        })
+        }).catch(r => {
+            state = STATES.RESYNC_WITH_NODES;
+            setTimeout(_ => {
+                run();
+            }, 1)
+        });
     }else if(state === STATES.MINE){
         mined = currentBlock.mine(chain.getNewestBlockHash());
         if(mined){
@@ -127,6 +135,12 @@ function run(){
             }
             state = STATES.MINE;
             run();
+        }).catch(r => {
+            console.error(r)
+            state = STATES.RESYNC_WITH_NODES;
+            setTimeout(_ => {
+                run();
+            }, 1)
         });
     }else if(state === STATES.INIT){
         const proms = nodes.map(n => n.getChainLength());
@@ -138,6 +152,11 @@ function run(){
                 state = STATES.MINE;
             }
             run();
+        }).catch(r => {
+            state = STATES.RESYNC_WITH_NODES;
+            setTimeout(_ => {
+                run();
+            }, 500)
         });
     }
 }

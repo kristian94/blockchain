@@ -18,6 +18,10 @@ function Chain(){
 
 // if pushed, returns the block. If not, returns the newest block in the chain
 Chain.prototype.tryPush = function(block){
+    if(!block.revalidate){
+        block = new Block(block)
+    }
+
     const prevHash = this.getNewestBlockHash();
     if(block.previousHash === prevHash && block.revalidate(prevHash)){
         this.blocks.push(block);
