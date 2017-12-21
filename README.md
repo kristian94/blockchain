@@ -147,3 +147,6 @@ In the docker-compose.yml we create a virtual network for our four nodes.
 We then assign the ports and ips and environmental variables for the containers.
 
 ![alt text](https://raw.githubusercontent.com/kristian94/blockchain/master/img/Screen%20Shot%202017-12-21%20at%2017.47.45.png)
+
+When `docker-compose up` is run the you'll see the following output
+![alt text](https://github.com/kristian94/blockchain/blob/master/img/Screen%20Shot%202017-12-21%20at%2018.05.36.png)
