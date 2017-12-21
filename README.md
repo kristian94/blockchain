@@ -150,3 +150,7 @@ We then assign the ports and ips and environmental variables for the containers.
 
 When `docker-compose up` is run the you'll see the following output
 ![alt text](https://github.com/kristian94/blockchain/blob/master/img/Screen%20Shot%202017-12-21%20at%2018.05.36.png)
+
+When calling our REST-API:
+
+![alt text](https://github.com/kristian94/blockchain/blob/master/img/Screen%20Shot%202017-12-21%20at%2018.17.31.png)
