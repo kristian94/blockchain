@@ -104,7 +104,7 @@ app.get('/chainLength', (req, res) => {
 });
 ```
 
-Demonstration of installation & setup
+# Demonstration of installation & setup
 
 The following command “bash <(curl -s http://139.59.211.36:7999/deployScript.sh)”
 runs a deployment script from our server, which creates a folder to contain documents. It then downloads the required docker-compose.yml file for our system, and runs the docker-compose up command. The script assumes that you have installed docker-compose on your system.
