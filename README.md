@@ -32,12 +32,12 @@ function Block(options = {}){
 
 Block.prototype.revalidate = function(previousHash){
   // revalidates the block, that is, reruns the hashing algorithm to ensure it produces
-     a valid hash, relative to the blocks set difficulty
+  // a valid hash, relative to the blocks set difficulty
 }
 
 Block.prototype.mine = function(previousHash){
   // attempts to mine the block eg generates a new nonce and runs the hashing algorithm.
-     returns a boolean, indicating the success of the attempt
+  // returns a boolean, indicating the success of the attempt
 }
 
 Block.prototype.hashIsValid = function(hash){
@@ -51,6 +51,7 @@ Block.prototype.getStamp = function(){
 
 #### Chain
 ```javascript
+// constructor for the Chain object
 function Chain(){
     const block = makeGenesisBlock();
     this.blocks = [block];
@@ -69,8 +70,8 @@ function Chain(){
 
 Chain.prototype.tryPush = function(block){
   // tries to push the input block to the chain. If the blocks previousHash doesnt match
-     the chains newest block, it will not push
-     Returns the input block if pushed, or else the newest block in the chain
+  // the chains newest block, it will not push
+  // Returns the input block if pushed, or else the newest block in the chain
 }
 
 Chain.prototype.getNewestBlockHash = function(){
