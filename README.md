@@ -104,6 +104,23 @@ app.get('/chainLength', (req, res) => {
 });
 ```
 
+### Test scenario
+
+Our test scenario runs 4 nodes in different containers. The application has the 
+ip addresses of the other nodes hardcoded, and uses these to communicate via http.
+
+When the scenario is run, each node will initially query the other nodes for their
+chain lengths chainLengths, and determine wether or not it needs to sync
+with their chains (if chain lengths are different). 
+
+When this is done the node will start generating blocks and attempt to mine these.
+When a block is mined, other nodes are notified and they will add it to their chains.
+Nodes will continually generate blocks and mine them, until they are terminated.
+
+If a node becomes out of sync (eg other nodes rejects its mined block) it will 
+query the nodes for their chains and replace its own chain with the longest of the
+fetched ones.
+
 # Demonstration of installation & setup
 
 The following command “bash <(curl -s http://139.59.211.36:7999/deployScript.sh)”
