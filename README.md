@@ -9,7 +9,7 @@ We had completely missed the section with documentation, and we are very sorry! 
 
 # Documentation
 
-## Koden
+## The code
 The main Object types we use are Chain and Block:
 
 #### Block
