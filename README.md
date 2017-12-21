@@ -121,6 +121,9 @@ If a node becomes out of sync (eg other nodes rejects its mined block) it will
 query the nodes for their chains and replace its own chain with the longest of the
 fetched ones.
 
+Nodes will have individual difficultes, set through environment variables. The difficulty
+determines how long it takes to generate a nonce, that results in a valid hash.
+
 # Demonstration of installation & setup
 
 The following command “bash <(curl -s http://139.59.211.36:7999/deployScript.sh)”
