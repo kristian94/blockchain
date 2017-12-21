@@ -10,8 +10,8 @@ Inspiration drawn from (sources)
 
 https://medium.com/@lhartikk/a-blockchain-in-200-lines-of-code-963cc1cc0e54
 
-# Manglende dokumentation
-Vi havde fuldstændig overset afsnittet med dokumentation, og det beklager vi selvfølgelig. Det var vores egen skyld. Vi har haft et testscenarie kørende siden onsdag d. 20/12 ca. kl. 19, som det også kan ses på billedet.
+# Missing documentation
+We had completely missed the section with documentation, and we are very sorry! It was our own fault. We have been running a test scenario since wednesday 20/12 around 19:00 o'clock which can be seen on the picture.
 
 ![alt text](https://github.com/kristian94/blockchain/blob/master/img/bevis.png)
 
