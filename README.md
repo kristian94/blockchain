@@ -109,6 +109,7 @@ app.get('/chainLength', (req, res) => {
 The following command “bash <(curl -s http://139.59.211.36:7999/deployScript.sh)”
 runs a deployment script from our server, which creates a folder to contain documents. It then downloads the required docker-compose.yml file for our system, and runs the docker-compose up command. The script assumes that you have installed docker-compose on your system.
 
+```
 read -p "Do you wish to install blockchain setup? y/n " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -118,7 +119,7 @@ cd blockchainsetup
 wget http://139.59.211.36:7999/docker-compose.yml
 docker-compose up -d
 fi
-
+```
 In the docker-compose.yml we create a virtual network for our four nodes. 
 
 ![alt text](https://raw.githubusercontent.com/kristian94/blockchain/master/img/Screen%20Shot%202017-12-21%20at%2017.47.33.png)
