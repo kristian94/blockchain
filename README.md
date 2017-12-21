@@ -120,7 +120,9 @@ docker-compose up -d
 fi
 
 In the docker-compose.yml we create a virtual network for our four nodes. 
+
 ![alt text](https://raw.githubusercontent.com/kristian94/blockchain/master/img/Screen%20Shot%202017-12-21%20at%2017.47.33.png)
 
 We then assign the ports and ips and environmental variables for the containers.
+
 ![alt text](https://raw.githubusercontent.com/kristian94/blockchain/master/img/Screen%20Shot%202017-12-21%20at%2017.47.45.png)
