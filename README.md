@@ -84,3 +84,30 @@ Chain.prototype.getNewestBlockHash = function(){
   // returns the hash of the newest block in the chain
 }
 ```
+
+### Rest API
+
+Our nodes communicate via Http. The Rest API can be used externally to view the chains.
+their API has the following routes:
+
+##### POST: /block
+```javascript
+app.post('/block', (req, res) => { 
+  // New blocks are published to this endpoint
+  // the response indicates wether or not the block was inserted in the chain
+});
+```
+
+##### GET: /chain
+```javascript
+app.get('/chain', (req, res) => {
+  // Returns the complete chain of the node
+});
+```
+
+##### GET: /chainLength
+```javascript
+app.get('/chainLength', (req, res) => { 
+  // returns the length of the nodes chain
+});
+```
