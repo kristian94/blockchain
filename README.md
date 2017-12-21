@@ -7,6 +7,14 @@ We had completely missed the section with documentation, and we are very sorry! 
 
 ![alt text](https://github.com/kristian94/blockchain/blob/master/img/bevis.png)
 
+[Chain1](http://212.47.237.59:22211/chain)
+
+[Chain2](http://212.47.237.59:22212/chain)
+
+[Chain3](http://212.47.237.59:22213/chain)
+
+[Chain4](http://212.47.237.59:22214/chain)
+
 # Documentation
 
 ## The code
